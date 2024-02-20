@@ -1,0 +1,29 @@
+{
+  "name": "datadashboard",
+  "version": "1.0.0",
+  "description": "A dashboard to display sales data",
+  "main": "main.js",
+  "scripts": {
+    "dev": "electron .",
+    "watch": "nodemon --exec electron .",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "build:css": "npx postcss ./index.css -o dist/index.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Trevor Streng",
+  "license": "ISC",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.2.0",
+    "@electron-forge/maker-deb": "^7.2.0",
+    "@electron-forge/maker-rpm": "^7.2.0",
+    "@electron-forge/maker-squirrel": "^7.2.0",
+    "@electron-forge/maker-zip": "^7.2.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
+    "electron": "^28.2.3"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  }
+}
