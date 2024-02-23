@@ -24,6 +24,7 @@
     "electron": "^28.2.3"
   },
   "dependencies": {
+    "csv-parser": "^3.0.0",
     "electron-squirrel-startup": "^1.0.0"
   }
 }
