@@ -14,6 +14,8 @@ window.onload = () => {
   ipcRenderer.send("getTotalSalesAmount");
 };
 
+// ipcRenderer.send('totalSalesAmount', )
+
 ipcRenderer.on("totalSalesAmount", (event, totalSalesAmount) => {
   console.log(totalSalesAmount);
   document.getElementById("totalSalesAmount").textContent = totalSalesAmount =
