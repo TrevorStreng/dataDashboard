@@ -8,6 +8,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
   //   ipcRenderer.on("update-counter", (_event, value) => callback(value)),
   // counterValue: (value) => ipcRenderer.send("counter-value", value),
   data: (callback) => {
-    ipcRenderer.on("totalSalesAmount", (value) => console.log(value));
+    ipcRenderer.send("totalSalesAmount", (event, value) => callback(value));
   },
 });

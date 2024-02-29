@@ -26,10 +26,13 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, "./preload.js"),
+      nodeIntegration: true,
+      contextIsolation: false,
+      // preload: path.join(__dirname, "./preload.js"),
     },
   });
 
+  // console.log(value);
   mainWindow.webContents.send("totalSalesAmount", value);
 
   mainWindow.loadFile("./frontend/index.html");
@@ -40,7 +43,7 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-ipcMain.on("totalSalesAmount", (event) => value);
+// ipcMain.on("totalSalesAmount", (event) => value);
 
 // app.on("ready", () => {
 // const mainWindow = new BrowserWindow({
