@@ -1,23 +1,16 @@
-const { ipcRenderer } = require("electron");
+// const { ipcRenderer } = require("electron");
+// const processData = require("../backend/dataProcessing");
 
-const information = document.getElementById("info");
-information.innerText = `This app is using Chrome (v${versions.chrome()}), Node.js (v${versions.node()}), and Electron (v${versions.electron()})`;
+console.log("here");
 
-const func = async () => {
-  const response = await window.versions.ping();
-  console.log(response); // prints out 'pong'
-};
+// ipcRenderer.on("totalSalesAmount", (event, arg) => {
+//   // const dataContainer = document.getElementById("data-container");
+//   // console.log(totalSalesAmount);
+//   // dataContainer.innerText = totalSalesAmount;
+//   console.log(arg);
+// });
 
-func();
-
-window.onload = () => {
-  ipcRenderer.send("getTotalSalesAmount");
-};
-
-// ipcRenderer.send('totalSalesAmount', )
-
-ipcRenderer.on("totalSalesAmount", (event, totalSalesAmount) => {
-  console.log(totalSalesAmount);
-  document.getElementById("totalSalesAmount").textContent = totalSalesAmount =
-    toFixed(2);
-});
+let data = window.electronAPI.data("text");
+const dataContainer = document.getElementById("data-container");
+dataContainer.innerText = data;
+console.log(data);
