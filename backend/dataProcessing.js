@@ -30,4 +30,7 @@ async function processData() {
   });
   return totalSalesAmount;
 }
+
+// make graph of income over time next
+
 module.exports = processData;
