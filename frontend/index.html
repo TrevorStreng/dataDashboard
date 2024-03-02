@@ -13,12 +13,14 @@
     />
     <title>Hello from Electron renderer!</title>
     <link rel="stylesheet" href="dist/index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <h1 class="text-red-400">Hello from Electron renderer!</h1>
     <p>👋</p>
     <p id="info"></p>
     <div>Total Sales Amount: <span id="data-container"></span></div>
+    <canvas id="myChart" width="400" height="400"></canvas>
   </body>
   <script src="renderer.js"></script>
 </html>

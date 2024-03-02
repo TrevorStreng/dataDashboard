@@ -24,6 +24,7 @@
     "electron": "^28.2.3"
   },
   "dependencies": {
+    "chart.js": "^4.4.2",
     "csv-parser": "^3.0.0",
     "electron-squirrel-startup": "^1.0.0"
   }
