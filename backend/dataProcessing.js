@@ -9,7 +9,7 @@ const { finished } = require("stream");
 //   .on("data", (data) => results.push(data))
 //   .on("end", () => console.log(results));
 
-const df = fs.createReadStream("csv/data.csv");
+const df = fs.createReadStream("backend/csv/data.csv");
 
 // console.log(df);
 async function totalSalesAmount() {
@@ -57,8 +57,9 @@ async function profitOverTime() {
 }
 
 async function topProducts() {
-  const productArr = [];
-  const productCnt = [];
+  let productArr = [];
+  let productCnt = [];
+  let topProductArr = [];
   await new Promise((resolve, reject) => {
     df.pipe(csv())
       .on("data", (row) => {
@@ -84,7 +85,6 @@ async function topProducts() {
             if (productCnt[i] > mostSold[mostSoldSearchIndex]) {
               if (mostSoldSearchIndex === 0) {
                 // inserts first value
-                console.log("made it here");
                 mostSold.splice(mostSold[mostSoldSearchIndex - 1], 0, i - 1);
                 mostSold.pop();
                 mostSoldSearchIndex = -1; // this exits the while loop
@@ -94,7 +94,6 @@ async function topProducts() {
               productCnt[i] < mostSold[mostSoldSearchIndex] &&
               productCnt[i] > mostSold[mostSoldSearchIndex - 1]
             ) {
-              console.log("made it here");
               mostSold.splice(mostSold[mostSoldSearchIndex - 1], 0, i - 1);
               mostSold.pop();
               mostSoldSearchIndex = -1; // this exits the while loop
@@ -103,20 +102,16 @@ async function topProducts() {
             }
             // console.log(mostSoldSearchIndex);
           }
-          console.log(mostSold);
         }
-        let topProductArr = [];
         for (let i = 0; i < numOfTopProducts; i++) {
           topProductArr.push(productArr[mostSold[i]]);
         }
         resolve(topProductArr);
-        console.log(topProductArr);
       });
   });
+  return topProductArr;
 }
-
-topProducts();
 
 // make graph of income over time next
 
-module.exports = { totalSalesAmount, profitOverTime };
+module.exports = { totalSalesAmount, profitOverTime, topProducts };

@@ -3,6 +3,7 @@
 const {
   totalSalesAmount,
   profitOverTime,
+  topProducts,
 } = require("../backend/dataProcessing");
 
 let data;
@@ -13,6 +14,14 @@ async function getData() {
   dataContainer.innerText = data;
 }
 getData();
+
+async function getTopSoldItems() {
+  let items = await topProducts();
+  const topItemsList = document.getElementById("top-items-list");
+  const listItems = items.map((item) => `<li>${item}</li>`);
+  topItemsList.innerHTML = listItems.join("");
+}
+getTopSoldItems();
 
 // async function createGraph() {
 //   // const { Chart } = await import("chart.js");
@@ -91,4 +100,4 @@ async function createGraph() {
   });
 }
 
-createGraph();
+// createGraph();

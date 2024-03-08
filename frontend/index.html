@@ -1,3 +1,11 @@
+<!-- 
+  1. Create a progress bar to see how close total sales is for a year to a certain goal
+  2. top selling products
+  3. identify key factors that cause increases of revenue.  Maybe time of year?
+  4. Geographical analysis. Maybe make a graph and label amount of sales by country.
+  5. Create an opening page where you can insert csv file
+ -->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,23 +20,19 @@
       content="default-src 'self'; script-src 'self'"
     />
     <title>Hello from Electron renderer!</title>
-    <link rel="stylesheet" href="dist/index.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="index.css" />
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
   </head>
   <body>
     <h1 class="text-red-400">Hello from Electron renderer!</h1>
     <p>👋</p>
     <p id="info"></p>
     <div>Total Sales Amount: <span id="data-container"></span></div>
-    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <div class="main">
+      <div id="top-items-list"></div>
+      <!-- <canvas id="myChart" width="400" height="400"></canvas> -->
+    </div>
   </body>
   <script src="renderer.js"></script>
 </html>
-
-<!-- 
-  1. Create a progress bar to see how close total sales is for a year to a certain goal
-  2. top selling products
-  3. identify key factors that cause increases of revenue.  Maybe time of year?
-  4. Geographical analysis. Maybe make a graph and label amount of sales by country.
-  5. Create an opening page where you can insert csv file
- -->
