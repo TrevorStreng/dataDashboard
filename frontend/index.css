@@ -18,3 +18,9 @@ body {
   width: 30%;
   height: 30%;
 }
+
+#my-chart {
+  width: 400px;
+  height: 400px;
+  border: 1px solid #ccc;
+}

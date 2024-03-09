@@ -9,6 +9,7 @@ const {
 
 let data;
 let tp;
+let monthTotals;
 async function getTotalSales() {
   data = await totalSalesAmount();
   const dataContainer = document.getElementById("data-container");
@@ -23,12 +24,67 @@ async function getTopSoldItems() {
 }
 
 async function getMonthlyTotals() {
-  let monthTotals = await monthlySales();
+  monthTotals = await monthlySales();
+  console.log(monthTotals);
   let displayBox = document.getElementById("monthly-sales");
   const displayMonthlyTotals = monthTotals.map(
     (month) => `<li><p>${month.monthNumber}</p><p>${month.profits}</p></li>`
   );
   displayBox.innerHTML = displayMonthlyTotals;
+  createGraph();
+}
+
+function getLargestValue() {
+  let biggest = 0;
+  for (let i = 0; i < monthTotals.length; i++) {
+    if (monthTotals[i].profits > biggest) biggest = monthTotals[i].profits;
+  }
+  return biggest;
+}
+
+async function createGraph() {
+  // document.addEventListener("DOMContentLoaded", function () {
+  const canvas = document.getElementById("my-chart");
+  const ctx = canvas.getContext("2d");
+
+  // Draw x-axis
+  ctx.beginPath();
+  ctx.strokeStyle = "blue";
+  ctx.lineWidth = 1;
+  ctx.moveTo(0, canvas.height);
+  ctx.lineTo(canvas.width, canvas.height);
+  ctx.stroke();
+
+  // Draw y-axis
+  ctx.beginPath();
+  ctx.strokeStyle = "blue";
+  ctx.lineWidth = 1;
+  ctx.moveTo(0, 0);
+  ctx.lineTo(0, canvas.height);
+  ctx.stroke();
+
+  // Plot points
+  ctx.beginPath();
+  ctx.strokeStyle = "red";
+  ctx.lineWidth = 1;
+  const largestMonthlyProfit = getLargestValue();
+  const xAxisScaler = canvas.width / monthTotals.length;
+  const yAxisScaler = canvas.height / largestMonthlyProfit;
+  for (let i = 0; i < monthTotals.length; i++) {
+    // this is because the first month is 12 and the last month is 12
+    if (i === 0) {
+      ctx.moveTo(
+        monthTotals[i].monthNumber - 12,
+        canvas.height - monthTotals[i].profits * yAxisScaler
+      );
+    } else {
+      ctx.lineTo(
+        monthTotals[i].monthNumber * xAxisScaler,
+        canvas.height - monthTotals[i].profits * yAxisScaler
+      );
+    }
+    ctx.stroke();
+  }
 }
 
 async function getData() {
@@ -38,82 +94,3 @@ async function getData() {
 }
 
 getData();
-
-// async function createGraph() {
-//   // const { Chart } = await import("chart.js");
-//   tp = await profitOverTime();
-//   const ctx = document.getElementById("myChart").getContext("2d");
-//   new Chart(ctx, {
-//     type: "line",
-//     data: {
-//       labels: "days",
-//       datasets: [
-//         {
-//           label: "profit over time",
-//           data: tp.map((point) => point.price),
-//           borderColor: "black",
-//           borderWidth: 1,
-//         },
-//       ],
-//     },
-//     options: {
-//       scales: {
-//         xAxes: [
-//           {
-//             type: "time",
-//             time: {
-//               unit: "day",
-//             },
-//           },
-//         ],
-//         yAxes: [
-//           {
-//             ticks: {
-//               beginAtZero: true,
-//             },
-//           },
-//         ],
-//       },
-//     },
-//   });
-// }
-
-async function createGraph() {
-  tp = await profitOverTime();
-  const ctx = document.getElementById("myChart").getContext("2d");
-  new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: tp.map((point) => point.date), // Assuming each item in tp has a 'date' property
-      datasets: [
-        {
-          label: "profit over time",
-          data: tp.map((point) => point.price), // Assuming each item in tp has a 'price' property
-          borderColor: "black",
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        xAxes: [
-          {
-            type: "time",
-            time: {
-              unit: "day",
-            },
-          },
-        ],
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-            },
-          },
-        ],
-      },
-    },
-  });
-}
-
-// createGraph();
