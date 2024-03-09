@@ -4,16 +4,16 @@ const {
   totalSalesAmount,
   profitOverTime,
   topProducts,
+  monthlySales,
 } = require("../backend/dataProcessing");
 
 let data;
 let tp;
-async function getData() {
+async function getTotalSales() {
   data = await totalSalesAmount();
   const dataContainer = document.getElementById("data-container");
   dataContainer.innerText = data;
 }
-getData();
 
 async function getTopSoldItems() {
   let items = await topProducts();
@@ -21,7 +21,23 @@ async function getTopSoldItems() {
   const listItems = items.map((item) => `<li>${item}</li>`);
   topItemsList.innerHTML = listItems.join("");
 }
-getTopSoldItems();
+
+async function getMonthlyTotals() {
+  let monthTotals = await monthlySales();
+  let displayBox = document.getElementById("monthly-sales");
+  const displayMonthlyTotals = monthTotals.map(
+    (month) => `<li><p>${month.monthNumber}</p><p>${month.profits}</p></li>`
+  );
+  displayBox.innerHTML = displayMonthlyTotals;
+}
+
+async function getData() {
+  getTotalSales();
+  getTopSoldItems();
+  getMonthlyTotals();
+}
+
+getData();
 
 // async function createGraph() {
 //   // const { Chart } = await import("chart.js");

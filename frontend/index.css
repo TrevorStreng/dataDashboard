@@ -13,3 +13,8 @@ body {
   border: 0.2em solid black;
   border-radius: 5%;
 }
+
+#monthly-sales {
+  width: 30%;
+  height: 30%;
+}

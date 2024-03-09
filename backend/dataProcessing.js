@@ -2,6 +2,7 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const { ipcRenderer } = require("electron");
 const { finished } = require("stream");
+const { resolve } = require("path");
 
 // const results = [];
 // fs.createReadStream("./csv/data.csv")
@@ -10,6 +11,7 @@ const { finished } = require("stream");
 //   .on("end", () => console.log(results));
 
 const df = fs.createReadStream("backend/csv/data.csv");
+// const df = fs.createReadStream("csv/data.csv"); // use this one when running only this file
 
 // console.log(df);
 async function totalSalesAmount() {
@@ -25,7 +27,7 @@ async function totalSalesAmount() {
       .on("end", () => {
         totalSalesAmount = totalSalesAmount.toFixed(2);
         resolve(totalSalesAmount);
-        console.log("total sales amount: ", totalSalesAmount);
+        // console.log("total sales amount: ", totalSalesAmount);
       })
       .on("error", (error) => {
         reject(error);
@@ -49,7 +51,6 @@ async function profitOverTime() {
       })
       .on("end", () => {
         resolve(profits);
-        console.log(profits);
       })
       .on("error", (error) => reject(error));
   });
@@ -107,11 +108,65 @@ async function topProducts() {
           topProductArr.push(productArr[mostSold[i]]);
         }
         resolve(topProductArr);
-      });
+      })
+      .on("error", (error) => reject(error));
   });
   return topProductArr;
 }
 
+async function monthlySales() {
+  let monthlyTotals = [];
+  let monthTotal = 0;
+  let prevMonthNumber; // month number 1-12
+  let newMonthNumber; // month number 1-12
+  await new Promise((resolve, reject) => {
+    df.pipe(csv())
+      .on("data", (row) => {
+        newMonthNumber = row.InvoiceDate.split("/")[0];
+        if (
+          newMonthNumber !== prevMonthNumber &&
+          prevMonthNumber !== undefined
+        ) {
+          monthData = {
+            monthNumber: prevMonthNumber,
+            profits: monthTotal,
+          };
+          monthlyTotals.push(monthData);
+          monthTotal = 0;
+        }
+        monthTotal += row.Quantity * row.UnitPrice;
+        prevMonthNumber = newMonthNumber;
+      })
+      .on("end", () => {
+        monthData = {
+          monthNumber: prevMonthNumber,
+          profits: monthTotal,
+        };
+        monthlyTotals.push(monthData);
+        resolve(monthlyTotals);
+      })
+      .on("error", (error) => reject(error));
+  });
+  return monthlyTotals;
+}
+
+async function testCall() {
+  // console.log(await topProducts());
+  const val = await monthlySales();
+  // totalSalesAmount();
+  let total = 0;
+  for (let i = 0; i < val.length; i++) {
+    total += val[i].profits;
+  }
+  console.log(total);
+}
+// testCall();
+
 // make graph of income over time next
 
-module.exports = { totalSalesAmount, profitOverTime, topProducts };
+module.exports = {
+  totalSalesAmount,
+  profitOverTime,
+  topProducts,
+  monthlySales,
+};
