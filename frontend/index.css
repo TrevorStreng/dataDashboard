@@ -17,6 +17,8 @@ body {
 #monthly-sales {
   width: 30%;
   height: 30%;
+  display: flex;
+  flex-direction: row;
 }
 
 #my-chart {
