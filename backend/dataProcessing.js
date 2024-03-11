@@ -150,20 +150,6 @@ async function monthlySales() {
   return monthlyTotals;
 }
 
-async function testCall() {
-  // console.log(await topProducts());
-  const val = await monthlySales();
-  // totalSalesAmount();
-  let total = 0;
-  for (let i = 0; i < val.length; i++) {
-    total += val[i].profits;
-  }
-  console.log(total);
-}
-// testCall();
-
-// make graph of income over time next
-
 module.exports = {
   totalSalesAmount,
   profitOverTime,

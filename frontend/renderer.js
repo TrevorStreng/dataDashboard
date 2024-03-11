@@ -28,7 +28,8 @@ async function getMonthlyTotals() {
   console.log(monthTotals);
   let displayBox = document.getElementById("monthly-sales");
   const displayMonthlyTotals = monthTotals.map(
-    (month) => `<li><p>${month.monthNumber}</p><p>${month.profits}</p></li>`
+    (month) =>
+      `<li><p>${month.monthNumber}</p><p>${month.profits.toFixed(2)}</p></li>`
   );
   displayBox.innerHTML = displayMonthlyTotals;
   createGraph();
@@ -87,10 +88,10 @@ async function createGraph() {
   }
 }
 
-async function getData() {
+async function displayData() {
   getTotalSales();
   getTopSoldItems();
   getMonthlyTotals();
 }
 
-getData();
+displayData();
