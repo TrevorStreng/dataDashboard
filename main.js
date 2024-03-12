@@ -12,7 +12,7 @@ const createWindow = () => {
     },
   });
 
-  mainWindow.webContents.send("totalSalesAmount", value);
+  // mainWindow.webContents.send("totalSalesAmount", value);
 
   mainWindow.loadFile("./frontend/index.html");
   mainWindow.webContents.openDevTools();

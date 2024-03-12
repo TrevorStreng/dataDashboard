@@ -10,11 +10,12 @@ const { resolve } = require("path");
 //   .on("data", (data) => results.push(data))
 //   .on("end", () => console.log(results));
 
-const df = fs.createReadStream("backend/csv/data.csv");
+// const df = fs.createReadStream("backend/csv/data.csv");
 // const df = fs.createReadStream("csv/data.csv"); // use this one when running only this file
 
 // console.log(df);
 async function totalSalesAmount() {
+  const df = fs.createReadStream("backend/csv/data.csv");
   let totalSalesAmount = 0;
   await new Promise((resolve, reject) => {
     df.pipe(csv())
@@ -37,6 +38,7 @@ async function totalSalesAmount() {
 }
 
 async function profitOverTime() {
+  const df = fs.createReadStream("backend/csv/data.csv");
   let profits = [];
   let timePrice = {};
   await new Promise((resolve, reject) => {
@@ -58,6 +60,7 @@ async function profitOverTime() {
 }
 
 async function topProducts() {
+  const df = fs.createReadStream("backend/csv/data.csv");
   let productArr = [];
   let productCnt = [];
   let topProductArr = [];
@@ -115,6 +118,7 @@ async function topProducts() {
 }
 
 async function monthlySales() {
+  const df = fs.createReadStream("backend/csv/data.csv");
   let monthlyTotals = [];
   let monthTotal = 0;
   let prevMonthNumber; // month number 1-12
@@ -149,6 +153,8 @@ async function monthlySales() {
   });
   return monthlyTotals;
 }
+
+// implement a function that counts how many instances of an item have sold in different countries
 
 module.exports = {
   totalSalesAmount,

@@ -24,12 +24,16 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <h1 class="text-red-400">Hello from Electron renderer!</h1>
+    <!-- <h1 class="text-red-400">Hello from Electron renderer!</h1>
     <p>👋</p>
-    <p id="info"></p>
-    <div>Total Sales Amount: <span id="data-container"></span></div>
+    <p id="info"></p> -->
 
-    <div class="main">
+    <div class="loading">
+      <div><p>loading...</p></div>
+    </div>
+
+    <div class="main hidden">
+      <div>Total Sales Amount: <span id="data-container"></span></div>
       <div id="top-items-list"></div>
       <div id="monthly-sales"></div>
       <div>

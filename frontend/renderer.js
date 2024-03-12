@@ -10,30 +10,17 @@ const {
 let data;
 let tp;
 let monthTotals;
-async function getTotalSales() {
-  data = await totalSalesAmount();
-  const dataContainer = document.getElementById("data-container");
-  dataContainer.innerText = data;
-}
+// async function getTotalSales() {
+//   return totalSalesAmount();
+// }
 
-async function getTopSoldItems() {
-  let items = await topProducts();
-  const topItemsList = document.getElementById("top-items-list");
-  const listItems = items.map((item) => `<li>${item}</li>`);
-  topItemsList.innerHTML = listItems.join("");
-}
+// async function getTopSoldItems() {
+//   return topProducts();
+// }
 
-async function getMonthlyTotals() {
-  monthTotals = await monthlySales();
-  console.log(monthTotals);
-  let displayBox = document.getElementById("monthly-sales");
-  const displayMonthlyTotals = monthTotals.map(
-    (month) =>
-      `<li><p>${month.monthNumber}</p><p>${month.profits.toFixed(2)}</p></li>`
-  );
-  displayBox.innerHTML = displayMonthlyTotals;
-  createGraph();
-}
+// async function getMonthlyTotals() {
+//   monthTotals = await monthlySales();
+// }
 
 function getLargestValue() {
   let biggest = 0;
@@ -88,10 +75,35 @@ async function createGraph() {
   }
 }
 
+function changeScreen() {
+  // remove hidden from main section and add to loading section
+  const loadingScreen = document.querySelector(".loading");
+  loadingScreen.classList.add("hidden");
+  const mainScreen = document.querySelector(".main");
+  mainScreen.classList.remove("hidden");
+}
+
 async function displayData() {
-  getTotalSales();
-  getTopSoldItems();
-  getMonthlyTotals();
+  try {
+    const totalSales = await totalSalesAmount();
+    const topItems = await topProducts();
+    monthTotals = await monthlySales();
+    console.log(topItems);
+
+    if (totalSales && topItems && monthTotals) {
+      document.getElementById("data-container").innerText = totalSales;
+      document.getElementById("top-items-list").innerHTML = topItems
+        .map((item) => `<li>${item}</li>`)
+        .join("");
+
+      createGraph();
+      changeScreen();
+    } else {
+      console.error("Failed to process data..🤬");
+    }
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 displayData();
