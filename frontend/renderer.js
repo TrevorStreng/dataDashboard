@@ -5,6 +5,7 @@ const {
   profitOverTime,
   topProducts,
   monthlySales,
+  totalSalesByCountry,
 } = require("../backend/dataProcessing");
 
 let data;
@@ -88,12 +89,27 @@ async function displayData() {
     const totalSales = await totalSalesAmount();
     const topItems = await topProducts();
     monthTotals = await monthlySales();
-    console.log(topItems);
+    const salesByCountry = await totalSalesByCountry();
 
-    if (totalSales && topItems && monthTotals) {
+    if (totalSales && topItems && monthTotals && salesByCountry) {
       document.getElementById("data-container").innerText = totalSales;
       document.getElementById("top-items-list").innerHTML = topItems
-        .map((item) => `<li>${item}</li>`)
+        .map(
+          (item) =>
+            `<li><p>item: ${item.product}<p/><p>count: ${item.amount}</p></li>`
+        )
+        .join("");
+      document.getElementById("monthly-sales").innerHTML = monthTotals
+        .map(
+          (month) =>
+            `<li><p>Month: ${month.monthNumber}</p><p>Profit: ${month.profits}</p></li>`
+        )
+        .join("");
+      document.getElementById("sales-by-country").innerHTML = salesByCountry
+        .map(
+          (country) =>
+            `<li><p>Country: ${country.country}</p><p>Amount Sold: ${country.itemCnt}</p></li>`
+        )
         .join("");
 
       createGraph();

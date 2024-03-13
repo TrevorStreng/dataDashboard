@@ -2,23 +2,12 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const { ipcRenderer } = require("electron");
 const { finished } = require("stream");
-const { resolve } = require("path");
-
-// const results = [];
-// fs.createReadStream("./csv/data.csv")
-//   .pipe(csv())
-//   .on("data", (data) => results.push(data))
-//   .on("end", () => console.log(results));
-
-// const df = fs.createReadStream("backend/csv/data.csv");
-// const df = fs.createReadStream("csv/data.csv"); // use this one when running only this file
-
-// console.log(df);
+const { resolve, parse } = require("path");
 async function totalSalesAmount() {
-  const df = fs.createReadStream("backend/csv/data.csv");
   let totalSalesAmount = 0;
   await new Promise((resolve, reject) => {
-    df.pipe(csv())
+    fs.createReadStream("backend/csv/data.csv")
+      .pipe(csv())
       .on("data", (row) => {
         const quantity = parseFloat(row.Quantity);
         const unitPrice = parseFloat(row.UnitPrice);
@@ -38,11 +27,11 @@ async function totalSalesAmount() {
 }
 
 async function profitOverTime() {
-  const df = fs.createReadStream("backend/csv/data.csv");
   let profits = [];
   let timePrice = {};
   await new Promise((resolve, reject) => {
-    df.pipe(csv())
+    fs.createReadStream("backend/csv/data.csv")
+      .pipe(csv())
       .on("data", (row) => {
         const price = parseFloat(row.Quantity * row.UnitPrice);
         timePrice = {
@@ -60,12 +49,12 @@ async function profitOverTime() {
 }
 
 async function topProducts() {
-  const df = fs.createReadStream("backend/csv/data.csv");
   let productArr = [];
   let productCnt = [];
   let topProductArr = [];
   await new Promise((resolve, reject) => {
-    df.pipe(csv())
+    fs.createReadStream("backend/csv/data.csv")
+      .pipe(csv())
       .on("data", (row) => {
         if (!productArr.includes(row.Description)) {
           productArr.push(row.Description);
@@ -108,7 +97,12 @@ async function topProducts() {
           }
         }
         for (let i = 0; i < numOfTopProducts; i++) {
-          topProductArr.push(productArr[mostSold[i]]);
+          // topProductArr.push(productArr[mostSold[i]]);\
+          const product = {
+            product: productArr[mostSold[i]],
+            amount: mostSold[i],
+          };
+          topProductArr.push(product);
         }
         resolve(topProductArr);
       })
@@ -118,13 +112,13 @@ async function topProducts() {
 }
 
 async function monthlySales() {
-  const df = fs.createReadStream("backend/csv/data.csv");
   let monthlyTotals = [];
   let monthTotal = 0;
   let prevMonthNumber; // month number 1-12
   let newMonthNumber; // month number 1-12
   await new Promise((resolve, reject) => {
-    df.pipe(csv())
+    fs.createReadStream("backend/csv/data.csv")
+      .pipe(csv())
       .on("data", (row) => {
         newMonthNumber = row.InvoiceDate.split("/")[0];
         if (
@@ -133,7 +127,7 @@ async function monthlySales() {
         ) {
           monthData = {
             monthNumber: prevMonthNumber,
-            profits: monthTotal,
+            profits: parseFloat(monthTotal.toFixed(2)),
           };
           monthlyTotals.push(monthData);
           monthTotal = 0;
@@ -144,7 +138,7 @@ async function monthlySales() {
       .on("end", () => {
         monthData = {
           monthNumber: prevMonthNumber,
-          profits: monthTotal,
+          profits: parseFloat(monthTotal.toFixed(2)),
         };
         monthlyTotals.push(monthData);
         resolve(monthlyTotals);
@@ -154,11 +148,54 @@ async function monthlySales() {
   return monthlyTotals;
 }
 
-// implement a function that counts how many instances of an item have sold in different countries
+async function totalSalesByCountry() {
+  let countries = [];
+  await new Promise((resolve, reject) => {
+    fs.createReadStream("backend/csv/data.csv")
+      .pipe(csv())
+      .on("data", (row) => {
+        const exisitngCountry = countries.find(
+          (country) => country.country === row.Country
+        );
+        if (exisitngCountry) {
+          exisitngCountry.itemCnt += parseInt(row.Quantity);
+        } else {
+          const countryData = {
+            country: row.Country,
+            itemCnt: parseInt(row.Quantity),
+          };
+          countries.push(countryData);
+        }
+      })
+      .on("end", () => {
+        countries.sort((a, b) => b.itemCnt - a.itemCnt);
+        resolve(countries);
+        console.log("finished");
+      })
+      .on("error", (error) => reject(error));
+  });
+  return countries;
+}
+
+async function itemsSoldByCountry() {
+  // implement a function that counts how many instances of an item have sold in different countries
+  await new Promise((resolve, reject) => {
+    fs.createReadStream("backend/csv/data.csv")
+      .pipe(csv())
+      .on("data", (row) => {})
+      .on("end", () => {});
+  });
+}
+
+// async function testing() {
+//   console.log(await totalSalesByCountry());
+// }
+// testing();
 
 module.exports = {
   totalSalesAmount,
   profitOverTime,
   topProducts,
   monthlySales,
+  totalSalesByCountry,
 };
