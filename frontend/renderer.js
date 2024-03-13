@@ -85,6 +85,44 @@ function changeScreen() {
 }
 
 async function displayData() {
+  const monthNames = {
+    1: {
+      name: "January",
+    },
+    2: {
+      name: "February",
+    },
+    3: {
+      name: "March",
+    },
+    4: {
+      name: "April",
+    },
+    5: {
+      name: "May",
+    },
+    6: {
+      name: "June",
+    },
+    7: {
+      name: "July",
+    },
+    8: {
+      name: "August",
+    },
+    9: {
+      name: "September",
+    },
+    10: {
+      name: "October",
+    },
+    11: {
+      name: "November",
+    },
+    12: {
+      name: "December",
+    },
+  };
   try {
     const totalSales = await totalSalesAmount();
     const topItems = await topProducts();
@@ -92,22 +130,26 @@ async function displayData() {
     const salesByCountry = await totalSalesByCountry();
 
     if (totalSales && topItems && monthTotals && salesByCountry) {
-      document.getElementById("data-container").innerText = totalSales;
+      document.getElementById("total-sales").innerText = totalSales;
       document.getElementById("top-items-list").innerHTML = topItems
         .map(
-          (item) =>
-            `<li><p>item: ${item.product}<p/><p>count: ${item.amount}</p></li>`
+          (item, key) =>
+            `<li><p>${key + 1}</p><p>item: ${item.product}<p/><p>count: ${
+              item.amount
+            }</p></li>`
         )
         .join("");
       document.getElementById("monthly-sales").innerHTML = monthTotals
         .map(
           (month) =>
-            `<li><p>Month: ${month.monthNumber}</p><p>Profit: ${month.profits}</p></li>`
+            `<li><p>Month: ${
+              monthNames[month.monthNumber].name
+            }</p><p>Profit: ${month.profits}</p></li>`
         )
         .join("");
       document.getElementById("sales-by-country").innerHTML = salesByCountry
         .map(
-          (country) =>
+          (country, key) =>
             `<li><p>Country: ${country.country}</p><p>Amount Sold: ${country.itemCnt}</p></li>`
         )
         .join("");

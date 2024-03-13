@@ -24,22 +24,30 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <!-- <h1 class="text-red-400">Hello from Electron renderer!</h1>
-    <p>👋</p>
-    <p id="info"></p> -->
-
+    <!-- Loading page -->
     <div class="loading">
       <div><p>loading...</p></div>
     </div>
 
+    <!-- Main page -->
     <div class="main hidden">
-      <div>Total Sales Amount: <span id="data-container"></span></div>
-      <div id="top-items-list"></div>
-      <div id="monthly-sales"></div>
-      <div>
+      <div class="totalSales">
+        <h2>Total Sales Amount:</h2>
+        <p id="total-sales"></p>
+      </div>
+      <div class="topItems">
+        <h2>Most Sold Items</h2>
+        <ul id="top-items-list"></ul>
+      </div>
+      <div class="monthlySales">
+        <ul id="monthly-sales"></ul>
+      </div>
+      <div class="countrySales">
+        <ul id="sales-by-country"></ul>
+      </div>
+      <div class="graph">
         <canvas id="my-chart"></canvas>
       </div>
-      <div id="sales-by-country"></div>
     </div>
   </body>
   <script src="renderer.js"></script>

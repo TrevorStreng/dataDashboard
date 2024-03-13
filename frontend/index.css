@@ -1,30 +1,74 @@
-body {
-  width: 100vw;
-  height: 100vh;
-}
+/* body { */
+/* width: 100vw; */
+/* height: 100vh; */
+/* } */
 .main {
   display: grid;
-  width: 100%;
-  height: 100%;
-}
-#top-items-list {
-  width: 30%;
-  height: 30%;
-  border: 0.2em solid black;
-  border-radius: 5%;
+  /* grid-template-columns: 25% 25% 25% 25%; */
+  grid-template-rows: auto 30em auto;
+  grid-template-areas:
+    "totalSales totalSales totalSales"
+    "topItems monthlySales countrySales"
+    "graph . . ";
 }
 
-#monthly-sales {
-  width: 30%;
-  height: 30%;
+.totalSales {
+  grid-area: totalSales;
+  width: 100%;
+  border-bottom: 0.1em black;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: row;
 }
 
+.topItems {
+  grid-area: topItems;
+}
+.topItems h2 {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+.topItems p {
+  margin: 0;
+  padding: 0;
+}
+#top-items-list {
+  border-radius: 5%;
+  list-style-type: none;
+  padding: 0;
+}
+
+.monthlySales {
+  grid-area: monthlySales;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+}
+#monthly-sales {
+  width: 30%;
+  list-style-type: none;
+}
+
+.grpah {
+  grid-area: graph;
+}
 #my-chart {
   width: 400px;
   height: 400px;
   border: 1px solid #ccc;
+}
+
+.countrySales {
+  grid-area: countrySales;
+  overflow: auto;
+}
+#sales-by-country {
+  list-style-type: none;
 }
 
 .hidden {
