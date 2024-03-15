@@ -12,36 +12,57 @@
     "graph . . ";
 }
 
+div {
+  border: 0.1em black solid;
+}
+
 .totalSales {
   grid-area: totalSales;
   width: 100%;
   border-bottom: 0.1em black;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: baseline;
   flex-direction: row;
+}
+.totalSales h2 {
+  padding: 0 0.25em;
 }
 
 .topItems {
   grid-area: topItems;
+  display: flex;
+  flex-direction: column;
 }
 .topItems h2 {
+  align-items: center;
   display: flex;
   width: 100%;
+  padding: 0.5em 0;
+  margin: 0;
   justify-content: center;
-  padding: 0;
-  margin: 0;
 }
-.topItems p {
+.topItems ul li {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+.topItems ul li div {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1em;
+}
+.topItems ul li div p {
   margin: 0;
-  padding: 0;
 }
 #top-items-list {
   border-radius: 5%;
   list-style-type: none;
-  padding: 0;
   display: flex;
-  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  margin: 0;
+  padding: 0 2em;
 }
 
 .monthlySales {

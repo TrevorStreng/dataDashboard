@@ -130,13 +130,13 @@ async function displayData() {
     const salesByCountry = await totalSalesByCountry();
 
     if (totalSales && topItems && monthTotals && salesByCountry) {
-      document.getElementById("total-sales").innerText = totalSales;
+      document.getElementById("total-sales").innerText = ` $${totalSales}`;
       document.getElementById("top-items-list").innerHTML = topItems
         .map(
           (item, key) =>
-            `<li><p>${key + 1}</p><p>item: ${item.product}<p/><p>count: ${
-              item.amount
-            }</p></li>`
+            `<li><h3>${key + 1}</h3><div><p>item: ${
+              item.product
+            }<p/><p>count: ${item.amount}</p></div></li>`
         )
         .join("");
       document.getElementById("monthly-sales").innerHTML = monthTotals
